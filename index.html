@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="Description" content="Demo of my-card and counter-app components">
+  <base href="/">
+
+  <style>
+    :root,
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-color: #ededed;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 32px 0;
+    }
+
+    section {
+      margin: 32px auto;
+      max-width: 600px;
+      text-align: center;
+    }
+  </style>
+  <title>My Card and Counter App</title>
+</head>
+
+<body>
+  <h1>My-Card with Quiz and Counter Integration</h1>
+
+  <section>
+    <my-card
+      title="Penn State Quiz"
+      subtitle="Test Your Knowledge!"
+      image="https://brand.psu.edu/images/backgrounds/veritcal-1-mark_registered.png"
+      details="Below is a multiple-choice quiz."
+      fancy
+    >
+      <p>Answer this quiz:</p>
+      <multiple-choice>
+        <h3 slot="question">What is the mascot of Penn State?</h3>
+        <ul slot="answers">
+          <li>Nittany Lion</li>
+          <li>Penn Eagle</li>
+          <li>Mountain Cat</li>
+          <li>None of the above</li>
+        </ul>
+        <p slot="feedback">Correct! The mascot of Penn State is the Nittany Lion.</p>
+      </multiple-choice>
+    </my-card>
+  </section>
+
+  <section>
+    <h2>Counter App Demo</h2>
+    <!-- Default counter -->
+    <counter-app></counter-app>
+
+    <!-- Customized counter -->
+    <counter-app counter="16" min="10" max="25"></counter-app>
+  </section>
+
+  <script type="module" src="./src/my-card.js"></script>
+  <script type="module" src="./src/counter-app.js"></script>
+</body>
+
+</html>
