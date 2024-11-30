@@ -111,7 +111,15 @@
       "kind": "javascript-module",
       "path": "src/my-card.js",
       "declarations": [],
-      "exports": []
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/my-card.js"
+          }
+        }
+      ]
     }
   ]
 }
