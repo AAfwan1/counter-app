@@ -1,110 +1,137 @@
 import { LitElement, html, css } from 'lit';
 
 /**
- * A complete card component with slots, collapsible details, and custom properties
+ * Counter component with min/max limits and color changes
  */
-
-export class MyCard extends LitElement {
-  // Define the tag name for the custom element
+export class CounterApp extends LitElement {
   static get tag() {
-    return 'my-card';
+    return 'counter-app';
   }
 
   constructor() {
     super();
-    this.title = "Card Title";
-    this.image = "https://via.placeholder.com/150";
-    this.details = "This is the default card details.";
-    this.expanded = false; // Default collapsed state
+    this.counter = 0;
+    this.min = 0;
+    this.max = 10;
   }
 
-  // Define CSS styles scoped to this component
+  static get properties() {
+    return {
+      counter: { type: Number },
+      min: { type: Number },
+      max: { type: Number },
+    };
+  }
+
   static get styles() {
     return css`
       :host {
         display: block;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        overflow: hidden;
-        width: 300px;
-        font-family: Arial, sans-serif;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        background-color: var(--card-bg-color, white);
-      }
-
-      img {
-        width: 100%;
-        height: auto;
-      }
-
-      .card-header {
-        padding: 16px;
-        background-color: var(--header-bg-color, #0054a4);
-        color: var(--header-text-color, white);
-        font-size: 1.25em;
-        font-weight: bold;
         text-align: center;
+        font-family: Arial, sans-serif;
+        margin: 16px auto;
       }
 
-      .card-body {
-        padding: 16px;
+      .counter-value {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 16px;
+        transition: color 0.3s ease;
       }
 
-      .details {
-        margin-top: 8px;
-        color: #333;
-        font-size: 0.9em;
+      .counter-value.min {
+        color: red;
+      }
+
+      .counter-value.mid {
+        color: green;
+      }
+
+      .counter-value.high {
+        color: orange;
+      }
+
+      .counter-value.max {
+        color: blue;
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
       }
 
       button {
-        margin-top: 16px;
-        padding: 8px 12px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
+        padding: 8px 16px;
+        font-size: 1.2rem;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        background-color: white;
         cursor: pointer;
-        font-size: 1em;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
       }
 
       button:hover {
-        background-color: #0056b3;
+        background-color: #f4f4f4;
+        border-color: #aaa;
+      }
+
+      button:focus {
+        outline: none;
+        border-color: #007bff;
+      }
+
+      button[disabled] {
+        cursor: not-allowed;
+        opacity: 0.5;
       }
     `;
   }
 
-  // Define properties that can be reflected to attributes
-  static get properties() {
-    return {
-      title: { type: String },
-      image: { type: String },
-      details: { type: String },
-      expanded: { type: Boolean },
-    };
-  }
-
-  // Toggle the visibility of the details section
-  toggleDetails() {
-    this.expanded = !this.expanded;
-  }
-
-  // Render the HTML structure of the card
   render() {
+    const valueClass =
+      this.counter === this.min
+        ? 'min'
+        : this.counter === this.max
+        ? 'max'
+        : this.counter >= 21
+        ? 'high'
+        : this.counter >= 18
+        ? 'mid'
+        : '';
+
     return html`
       <div>
-        ${this.image ? html`<img src="${this.image}" alt="${this.title}" />` : ''}
-        <div class="card-header">${this.title}</div>
-        <div class="card-body">
-          <slot></slot>
-          <button @click="${this.toggleDetails}">
-            ${this.expanded ? 'Hide Details' : 'Show Details'}
+        <div class="counter-value ${valueClass}">${this.counter}</div>
+        <div class="buttons">
+          <button
+            @click="${this._decrement}"
+            ?disabled="${this.counter <= this.min}"
+          >
+            -
           </button>
-          ${this.expanded ? html`<p class="details">${this.details}</p>` : ''}
+          <button
+            @click="${this._increment}"
+            ?disabled="${this.counter >= this.max}"
+          >
+            +
+          </button>
         </div>
       </div>
     `;
   }
+
+  _increment() {
+    if (this.counter < this.max) {
+      this.counter++;
+    }
+  }
+
+  _decrement() {
+    if (this.counter > this.min) {
+      this.counter--;
+    }
+  }
 }
 
-// Register the custom element with the browser
-globalThis.customElements.define(MyCard.tag, MyCard);
+customElements.define(CounterApp.tag, CounterApp);
