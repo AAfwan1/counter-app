@@ -1,5 +1,5 @@
 import { html, fixture, expect } from '@open-wc/testing';
-import "../counter-app.js";
+import "../src/counter-app.js";
 
 describe("CounterApp test", () => {
   let element;
